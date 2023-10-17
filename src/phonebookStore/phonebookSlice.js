@@ -1,7 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import Notiflix from 'notiflix';
 import { nanoid } from 'nanoid';
+
+export const fetchPhonebook = createAsyncThunk(
+    'phonebook/fetchPhonebook' 
+);
 
 const phonebookInitialState = {contacts: [], filter: ''};
 
