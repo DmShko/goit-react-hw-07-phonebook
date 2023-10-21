@@ -9,8 +9,8 @@ import phoneSec from './PhoneBookSection.module.css';
 
 export const PhoneBookSection = () => {
 
-  const selector = useSelector(state => state.phonebook.contacts);
-    // console.log(selector);
+  const selector = useSelector(state => state.phonebook.items);
+  
     // <DataIn> - this component performs save input data and validation.
     // here change THIS state and main state in App.
     // <FindContacts - this component change 'filter' property in App 'state'

@@ -1,4 +1,3 @@
-
 import { useDispatch, useSelector} from 'react-redux';
 import { deluser } from 'phonebookStore/phonebookSlice';
 
@@ -6,10 +5,11 @@ import { deluser } from 'phonebookStore/phonebookSlice';
 import o from '../DataOut/DataOut.module.css';
 
 export const DataOut = ({ print }) => {
-  
+
   const selector = useSelector(state => state.phonebook.filter);
   const dispatch = useDispatch();
-  // chage data in App 'state' (delete user)
+
+  // chage data in App 'state' (delete user) 
   const deleteUser = evt => {
     dispatch(deluser(evt.target.name));
   };

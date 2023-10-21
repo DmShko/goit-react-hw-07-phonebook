@@ -1,13 +1,13 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 import Notiflix from 'notiflix';
-import { nanoid } from 'nanoid';
+// import { nanoid } from 'nanoid';
 
-export const fetchPhonebook = createAsyncThunk(
-    'phonebook/fetchPhonebook' 
-);
+import { getAPI } from '../API/GetContacts';
+import { addAPI } from '../API/AddContact';
+import { deleteAPI } from '../API/DeleteContact';
 
-const phonebookInitialState = {contacts: [], filter: ''};
+const phonebookInitialState = {items: [], filter: '', status: null, error: null,};
 
 const phonebookSlice = createSlice(
     {
@@ -18,25 +18,54 @@ const phonebookSlice = createSlice(
                 
                 //find repeat contact
                 if (
-                    state.contacts.find(
-                    element => element.name === [action.payload.name, action.payload.number].join(' ')
+                    state.items.find(
+                    element => element.name === [action.payload.name, action.payload.phone].join(' ')
                     ) !== undefined
                 ) {
                     Notiflix.Notify.warning(`"${action.payload.name}" is already in contacts!`, {position: 'center-top', fontSize: '24px',});
                     return state;
                 } 
                 //add new contact with save current value state
-                state.contacts.push({name: [action.payload.name, action.payload.number].join(' '), id: nanoid(),});
+                state.items.push({name: [action.payload.name, action.payload.phone].join(' '), id: action.payload.value.payload.id,});
                
             },
             // delete contact
             deluser(state, action) {
                 
-                state.contacts = state.contacts.filter(element => element.id !== action.payload);
+                state.items = state.items.filter(element => element.id !== action.payload);
             },
             // delete/change contacts render filter 
             changeFilter(state, action) {
                 state.filter = action.payload;
+            },
+        },
+        extraReducers:{
+            [getAPI.pending]: (state) => {state.status = 'loading'; state.error = null;},
+            [getAPI.fulfilled]: (state, action) => {
+                
+                state.status = 'resolved';
+                action.payload.map(value => 
+                    
+                    {state.items.push({name: [value.name, value.phone].join(' '), id: value.id,})}
+                );
+                
+                // some actions with 'action'...
+            },
+            [getAPI.rejected]: (state) => {
+                state.status = 'rejected'
+                
+                // state.error = action.payload;
+            },
+
+            [addAPI.pending]: (state) => {state.status = 'loading'; state.error = null;},
+            [addAPI.fulfilled]: (state, action) => {
+                state.status = 'resolved';
+                
+                // some actions with 'action'...
+            },
+            [addAPI.rejected]: (state, action) => {
+                state.status = 'rejected';
+                // state.error = action.payload;
             },
         }
     }

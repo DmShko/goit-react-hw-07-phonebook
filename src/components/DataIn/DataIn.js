@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../../phonebookStore/phonebookSlice';
+import { addAPI } from '../../API/AddContact'
 
 // add css modules
 import di from './DataIn.module.css';
@@ -8,11 +9,12 @@ import di from './DataIn.module.css';
 export const DataIn = () => {
 
   const [ name, setName ] = useState('');
-  const [ number, setNumber ] = useState('');
+  const [ phone, setNumber ] = useState('');
   const [ inputNameValid, setInputNameValid ] = useState('');
   const [ inputNumberValid, setInputNumberValid ] = useState('');
 
   const dispatch = useDispatch();
+  const selector = useSelector(state => state.phonebook.items);
 
   const clearInputs = () => {
    
@@ -31,9 +33,11 @@ export const DataIn = () => {
 
       evt.preventDefault();
       
-      // sdd user to Redux store
-      dispatch(add({name, number}));
+      // sdd user to Redux store 
+      dispatch(addAPI({name, phone,})).then(value => dispatch(add({name, phone, value,})));
       
+      // dispatch(add({name, phone,}));
+
     } else {
       evt.preventDefault();
     }
@@ -94,7 +98,7 @@ export const DataIn = () => {
           <p className={di.text}>Number</p>
           <input
             className={di.input}
-            value={number}
+            value={phone}
             name="number"
             type="tel"
             onChange={inputChange}
