@@ -51,31 +51,30 @@ const phonebookSlice = createSlice(
                 
                 // some actions with 'action'...
             },
-            [getAPI.rejected]: (state) => {
+            [getAPI.rejected]: (state, action) => {
                 state.isLoading = false;
-                
-                // state.error = action.payload;
+                state.error = action.payload;
             },
 
             [addAPI.pending]: (state) => {state.isLoading = true;; state.error = null;},
-            [addAPI.fulfilled]: (state, action) => {
+            [addAPI.fulfilled]: (state) => {
                 state.status = 'resolved';
                 state.isLoading = false;
                 // some actions with 'action'...
             },
             [addAPI.rejected]: (state, action) => {
                 state.status = 'rejected';
-                // state.error = action.payload;
+                state.error = action.payload;
             },
             [deleteAPI.pending]: (state) => {state.isLoading = true; state.error = null;},
-            [deleteAPI.fulfilled]: (state, action) => {
+            [deleteAPI.fulfilled]: (state) => {
                 state.status = 'resolved';
                 state.isLoading = false;
                 // some actions with 'action'...
             },
             [deleteAPI.rejected]: (state, action) => {
                 state.status = 'rejected';
-                // state.error = action.payload;
+                state.error = action.payload;
             },
         }
     }
