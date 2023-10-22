@@ -7,7 +7,7 @@ import { getAPI } from '../API/GetContacts';
 import { addAPI } from '../API/AddContact';
 import { deleteAPI } from '../API/DeleteContact';
 
-const phonebookInitialState = {items: [], filter: '', status: null, error: null,};
+const phonebookInitialState = {items: [], filter: '', isLoading: false, error: null,};
 
 const phonebookSlice = createSlice(
     {
@@ -40,30 +40,40 @@ const phonebookSlice = createSlice(
             },
         },
         extraReducers:{
-            [getAPI.pending]: (state) => {state.status = 'loading'; state.error = null;},
+            [getAPI.pending]: (state) => {state.isLoading = true; state.error = null;},
             [getAPI.fulfilled]: (state, action) => {
                 
-                state.status = 'resolved';
+                state.isLoading = false;
                 action.payload.map(value => 
                     
-                    {state.items.push({name: [value.name, value.phone].join(' '), id: value.id,})}
+                   { return state.items.push({name: [value.name, value.phone].join(' '), id: value.id,})}
                 );
                 
                 // some actions with 'action'...
             },
             [getAPI.rejected]: (state) => {
-                state.status = 'rejected'
+                state.isLoading = false;
                 
                 // state.error = action.payload;
             },
 
-            [addAPI.pending]: (state) => {state.status = 'loading'; state.error = null;},
+            [addAPI.pending]: (state) => {state.isLoading = true;; state.error = null;},
             [addAPI.fulfilled]: (state, action) => {
                 state.status = 'resolved';
-                
+                state.isLoading = false;
                 // some actions with 'action'...
             },
             [addAPI.rejected]: (state, action) => {
+                state.status = 'rejected';
+                // state.error = action.payload;
+            },
+            [deleteAPI.pending]: (state) => {state.isLoading = true; state.error = null;},
+            [deleteAPI.fulfilled]: (state, action) => {
+                state.status = 'resolved';
+                state.isLoading = false;
+                // some actions with 'action'...
+            },
+            [deleteAPI.rejected]: (state, action) => {
                 state.status = 'rejected';
                 // state.error = action.payload;
             },

@@ -1,5 +1,6 @@
 import { useDispatch, useSelector} from 'react-redux';
 import { deluser } from 'phonebookStore/phonebookSlice';
+import { deleteAPI } from '../../API/DeleteContact';
 
 // add css modules
 import o from '../DataOut/DataOut.module.css';
@@ -11,6 +12,8 @@ export const DataOut = ({ print }) => {
 
   // chage data in App 'state' (delete user) 
   const deleteUser = evt => {
+ 
+    dispatch(deleteAPI(evt.target.name)); 
     dispatch(deluser(evt.target.name));
   };
 
