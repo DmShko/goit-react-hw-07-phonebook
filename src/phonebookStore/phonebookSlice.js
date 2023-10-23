@@ -44,11 +44,14 @@ const phonebookSlice = createSlice(
             [getAPI.fulfilled]: (state, action) => {
                 
                 state.isLoading = false;
-                action.payload.map(value => 
-                    
-                   { return state.items.push({name: [value.name, value.phone].join(' '), id: value.id,})}
-                );
                 
+                if(state.items.length
+                     !== action.payload.length
+                    ) {
+                    action.payload.map(value => 
+
+                    { return state.items.push({name: [value.name, value.phone].join(' '), id: value.id,})});
+                }
                 // some actions with 'action'...
             },
             [getAPI.rejected]: (state, action) => {
@@ -56,7 +59,7 @@ const phonebookSlice = createSlice(
                 state.error = action.payload;
             },
 
-            [addAPI.pending]: (state) => {state.isLoading = true;; state.error = null;},
+            [addAPI.pending]: (state) => {state.isLoading = true; state.error = null;},
             [addAPI.fulfilled]: (state) => {
                 state.status = 'resolved';
                 state.isLoading = false;

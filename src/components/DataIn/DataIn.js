@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../../phonebookStore/phonebookSlice';
 import { addAPI } from '../../API/AddContact'
+import Notiflix from 'notiflix';
 
 // add css modules
 import di from './DataIn.module.css';
+import { getAPI } from 'API/GetContacts';
 
 export const DataIn = () => {
 
@@ -31,11 +33,18 @@ export const DataIn = () => {
       inputNumberValid === false
     ) {
 
-      evt.preventDefault();
+      evt.preventDefault(getAPI);
       
-      // sdd user to Redux store 
-      dispatch(addAPI({name, phone,})).then(value => dispatch(add({name, phone, value,})));
-      
+      if((selector.find(element => element.name === [name, phone].join(' '))) !== undefined)
+      {
+
+        Notiflix.Notify.warning(`"${name}" is already in contacts!`, {position: 'center-top', fontSize: '24px',});
+        
+      } else {
+        // sdd user to Redux store 
+        dispatch(addAPI({name, phone,})).then(value => dispatch(add({name, phone, value,})));
+      }
+        
       // dispatch(add({name, phone,}));
 
     } else {

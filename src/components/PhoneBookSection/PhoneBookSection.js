@@ -24,6 +24,7 @@ export const PhoneBookSection = () => {
       <p>Contacts</p>
       <FindContacts/>
       {loadState && <Loader/>}
+      {!loadState && selector.length === 0 ? <p className={phoneSec.message}>Phonebook is empty...</p>: ''}
       <ul className={phoneSec.list}>
         {selector !== undefined ? selector.map(result => {
           return (
