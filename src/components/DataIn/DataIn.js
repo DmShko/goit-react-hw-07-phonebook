@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { add } from '../../phonebookStore/phonebookSlice';
-import { addAPI } from '../../API/AddContact'
+import { addAPI } from '../../API/AddContact';
 import Notiflix from 'notiflix';
 
 // add css modules
@@ -9,44 +9,41 @@ import di from './DataIn.module.css';
 import { getAPI } from 'API/GetContacts';
 
 export const DataIn = () => {
-
-  const [ name, setName ] = useState('');
-  const [ phone, setNumber ] = useState('');
-  const [ inputNameValid, setInputNameValid ] = useState('');
-  const [ inputNumberValid, setInputNumberValid ] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setNumber] = useState('');
+  const [inputNameValid, setInputNameValid] = useState('');
+  const [inputNumberValid, setInputNumberValid] = useState('');
 
   const dispatch = useDispatch();
   const selector = useSelector(state => state.phonebook.items);
 
   const clearInputs = () => {
-   
     setName('');
     setNumber('');
-
-  }
+  };
 
   // transfer contacts data to method in App 'reducer'
   const addUser = evt => {
     // transfer data only, if valid fields is valid
-    if (
-      inputNameValid === false &&
-      inputNumberValid === false
-    ) {
-
+    if (inputNameValid === false && inputNumberValid === false) {
       evt.preventDefault(getAPI);
-      
-      if((selector.find(element => element.name === [name, phone].join(' '))) !== undefined)
-      {
 
-        Notiflix.Notify.warning(`"${name}" is already in contacts!`, {position: 'center-top', fontSize: '24px',});
-        
+      if (
+        selector.find(element => element.name === [name, phone].join(' ')) !==
+        undefined
+      ) {
+        Notiflix.Notify.warning(`"${name}" is already in contacts!`, {
+          position: 'center-top',
+          fontSize: '24px',
+        });
       } else {
-        // sdd user to Redux store 
-        dispatch(addAPI({name, phone,})).then(value => dispatch(add({name, phone, value,})));
+        // sdd user to Redux store
+        dispatch(addAPI({ name, phone })).then(value =>
+          dispatch(add({ name, phone, value }))
+        );
       }
-        
-      // dispatch(add({name, phone,}));
 
+      // dispatch(add({name, phone,}));
     } else {
       evt.preventDefault();
     }
@@ -55,27 +52,23 @@ export const DataIn = () => {
   };
 
   const checkValid = data => {
-    
     // CHANGE 'VALID' PROPERTIES OF inputs ON BASE PREVIOUS VALUE
     if (data.validity.patternMismatch === false) {
       data.name === 'name'
         ? setInputNameValid(value => value && data.validity.patternMismatch)
-        : setInputNumberValid(value => value && data.validity.patternMismatch)
+        : setInputNumberValid(value => value && data.validity.patternMismatch);
     } else {
       data.name === 'name'
-      ? setInputNameValid(value => value || data.validity.patternMismatch)
-      : setInputNumberValid(value => value || data.validity.patternMismatch)
+        ? setInputNameValid(value => value || data.validity.patternMismatch)
+        : setInputNumberValid(value => value || data.validity.patternMismatch);
     }
-
   };
 
   const stateChange = data => {
-
     const { name, value } = data;
 
     // change 'name' and 'number' without use previous value
     name === 'name' ? setName(value) : setNumber(value);
-    
   };
 
   const inputChange = evt => {
@@ -124,5 +117,5 @@ export const DataIn = () => {
         </button>
       </form>
     </>
-  ); 
-}
+  );
+};

@@ -8,13 +8,12 @@ export const Loader = () => {
   // };
   const counterRef = useRef();
 
-  const [ state, setCounter ] = useState({counter: 0,});
+  const [state, setCounter] = useState({ counter: 0 });
   // componentDidMount() {
   //   this.change();
   // }
   useEffect(() => {
-    if (counterRef.current !== state) 
-    {
+    if (counterRef.current !== state) {
       counterRef.current = state;
       change();
     }
@@ -28,28 +27,21 @@ export const Loader = () => {
     setTimeout(() => {
       state.counter < 3
         ? setCounter(value => ({ counter: value.counter + 1 }))
-        : setCounter({counter: 0,});
+        : setCounter({ counter: 0 });
     }, 200);
   };
 
   return (
     <div className={lo.element}>
       <div
-        className={
-          state.counter === 1 ? `${lo.scale} ${lo.circle}` : lo.circle
-        }
+        className={state.counter === 1 ? `${lo.scale} ${lo.circle}` : lo.circle}
       ></div>
       <div
-        className={
-          state.counter === 2 ? `${lo.scale} ${lo.circle}` : lo.circle
-        }
+        className={state.counter === 2 ? `${lo.scale} ${lo.circle}` : lo.circle}
       ></div>
       <div
-        className={
-          state.counter === 3 ? `${lo.scale} ${lo.circle}` : lo.circle
-        }
+        className={state.counter === 3 ? `${lo.scale} ${lo.circle}` : lo.circle}
       ></div>
     </div>
   );
-}
-
+};
